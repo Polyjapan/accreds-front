@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Créer un nouveau type d'accréditation</h2>
+
+<mat-dialog-content>
+  <p>Utilisez ce formulaire pour créer un nouveau type d'accréditation.</p>
+  <p>Ne vous préoccupez pas encore du moyen d'accréditation (badge, bracelet, ...), le responsable sécurité s'en chargera.</p>
+
+  <form (ngSubmit)="submit($event)" #ngform="ngForm">
+    <mat-form-field style="width: 100%;">
+      <mat-label>Nom de l'accréditation</mat-label>
+      <input matInput placeholder="Exposant" [(ngModel)]="accredType.accredTypeName" name="name" required maxlength="150">
+    </mat-form-field>
+
+    <mat-checkbox [(ngModel)]="accredType.isTemporary" name="isTemporary">Accréditation temporaire (le badge doit être rendu en fin de journée)</mat-checkbox>
+    <br>
+    <mat-checkbox [(ngModel)]="accredType.requiresSignature" name="requiresSignature">Signature obligatoire</mat-checkbox>
+
+    <br><br>
+
+    <button mat-stroked-button color="primary" type="submit" style="width: 100%;" [disabled]="sending || !ngform.form.valid">
+      Créer
+      <mat-progress-spinner *ngIf="sending" mode="indeterminate" diameter="20" class="spinner"></mat-progress-spinner>
+    </button>
+
+  </form>
+</mat-dialog-content>
+

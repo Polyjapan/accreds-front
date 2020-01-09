@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Créer un nouvel accueil VIP</h2>
+
+<mat-dialog-content>
+  <form (ngSubmit)="submit($event)" #ngform="ngForm">
+    <mat-form-field style="width: 100%;">
+      <mat-label>Nom de l'accueil</mat-label>
+      <input matInput placeholder="VIP CE" [(ngModel)]="desk.vipDeskName" name="name" required maxlength="150">
+    </mat-form-field>
+
+    <button mat-stroked-button color="primary" type="submit" style="width: 100%;" [disabled]="sending || !ngform.form.valid">
+      Créer
+      <mat-progress-spinner *ngIf="sending" mode="indeterminate" diameter="20" class="spinner"></mat-progress-spinner>
+    </button>
+
+  </form>
+</mat-dialog-content>
+

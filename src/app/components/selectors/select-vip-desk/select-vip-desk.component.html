@@ -1,0 +1,11 @@
+<mat-form-field style="width: calc(100% - 40px);" *ngIf="desks">
+  <mat-label>{{label}}</mat-label>
+
+  <mat-select [ngModel]="selected" (ngModelChange)="changeValue($event)" name="desk" required>
+    <mat-option *ngFor="let option of desks" [value]="option.vipDeskId">
+      {{ option.vipDeskName }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<button *ngIf="allowCreation && desks" mat-icon-button (click)="create()" type="button"><mat-icon>add</mat-icon></button>

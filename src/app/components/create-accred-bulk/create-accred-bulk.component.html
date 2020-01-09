@@ -1,0 +1,26 @@
+<form>
+  <app-select-accred-type [allowCreation]="true" style="width: 100%;" [(selected)]="accredType"></app-select-accred-type>
+
+  <app-select-vip-desk [allowCreation]="true" style="width: 100%;" [(selected)]="vipPref"></app-select-vip-desk>
+
+  <p>Colonnes présentes :</p>
+  <mat-checkbox name="hasName" [(ngModel)]="hasName">Prénom et nom</mat-checkbox><br>
+  <mat-checkbox name="hasName" [(ngModel)]="hasName">Organisme</mat-checkbox>
+
+  <p>Exemple de format :</p>
+  <pre>{{exampleFormat}}</pre>
+
+  <mat-form-field *ngIf="isFormatValid" style="width: 100%;">
+    <mat-label>Saisie des lignes</mat-label>
+    <textarea matInput rows="5" [placeholder]="exampleFormat.split('\n')[1]" name="lines" [(ngModel)]="lines"></textarea>
+  </mat-form-field>
+
+  <br><br>
+  <button mat-stroked-button style="width: 100%;" [disabled]="sending || !(isFormatValid && areTypesValid && isContentValid)" (click)="send()">
+    Enregistrer
+
+    <mat-progress-spinner *ngIf="sending" mode="indeterminate" diameter="20" class="spinner"></mat-progress-spinner>
+  </button>
+</form>
+
+

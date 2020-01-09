@@ -1,0 +1,30 @@
+
+<table mat-table [dataSource]="accreds | async" style="width: 100%;">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Prénom Nom </th>
+    <td mat-cell *matCellDef="let e"> {{e.accred.firstname}} {{e.accred.lastname}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="bodyName">
+    <th mat-header-cell *matHeaderCellDef> Organisme </th>
+    <td mat-cell *matCellDef="let e"> {{e.accred.bodyName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="accredType">
+    <th mat-header-cell *matHeaderCellDef> Type d'accréditation </th>
+    <td mat-cell *matCellDef="let element"> {{element.type ? element.type.accredType.accredTypeName : 'Inconnu'}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="accredStatus">
+    <th mat-header-cell *matHeaderCellDef> Etat de l'accréditation </th>
+    <td mat-cell *matCellDef="let element"> {{statusToString(element.accred.status)}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> </th>
+    <td mat-cell *matCellDef="let element">  </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columns"></tr>
+  <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+</table>

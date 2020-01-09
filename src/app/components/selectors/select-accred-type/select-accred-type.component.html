@@ -1,0 +1,11 @@
+<mat-form-field style="width: calc(100% - 40px);" *ngIf="types">
+  <mat-label>{{label}}</mat-label>
+
+  <mat-select [ngModel]="selected" (ngModelChange)="changeValue($event)" name="type" required>
+    <mat-option *ngFor="let option of types" [value]="option.accredTypeId">
+      {{ option.accredTypeName }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<button *ngIf="allowCreation && types" mat-icon-button (click)="create()" type="button"><mat-icon>add</mat-icon></button>

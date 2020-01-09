@@ -1,0 +1,33 @@
+<form *ngIf="accred">
+
+  <div fxLayout="row" fxLayoutGap="20px">
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Prénom" name="firstname" [(ngModel)]="accred.firstname" />
+    </mat-form-field>
+
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Nom" name="lastname" [(ngModel)]="accred.lastname" />
+    </mat-form-field>
+  </div>
+
+  <mat-form-field style="width: 100%;">
+    <input matInput placeholder="Organisme" name="bodyName" [(ngModel)]="accred.bodyName" />
+  </mat-form-field>
+
+  <app-select-accred-type [allowCreation]="true" style="width: 100%;" [(selected)]="accred.accredTypeId"></app-select-accred-type>
+
+  <app-select-vip-desk [allowCreation]="true" style="width: 100%;" [(selected)]="accred.preferedVipDesk"></app-select-vip-desk>
+
+  <mat-form-field style="width: 100%;">
+    <input matInput placeholder="Précisions" name="details" [(ngModel)]="accred.details" />
+  </mat-form-field>
+
+  <br><br>
+  <button mat-stroked-button style="width: 100%;" [disabled]="sending || !isValid" (click)="send()">
+    Enregistrer
+
+    <mat-progress-spinner *ngIf="sending" mode="indeterminate" diameter="20" class="spinner"></mat-progress-spinner>
+  </button>
+</form>
+
+
