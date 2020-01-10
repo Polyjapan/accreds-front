@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {Accred, FullAccred} from '../data/accred';
 import {map, switchMap} from 'rxjs/operators';
@@ -9,11 +9,23 @@ import {AccredTypesService} from './accredTypes.service';
 
 @Injectable({providedIn: 'root'})
 export class AccredsService {
+  private stream = new BehaviorSubject<FullAccred[]>([]);
+
+
   constructor(private http: HttpClient, private types: AccredTypesService) {
   }
 
   getAccreds(): Observable<Accred[]> {
     return this.http.get<Accred[]>(environment.apiurl + '/accreds');
+  }
+
+  updateContinuousAccreds() {
+    this.getFullAccreds().subscribe(res => this.stream.next(res));
+  }
+
+  getAccredsContinuous(): Observable<FullAccred[]> {
+    this.updateContinuousAccreds();
+    return this.stream;
   }
 
   getAccred(id: number): Observable<Accred> {

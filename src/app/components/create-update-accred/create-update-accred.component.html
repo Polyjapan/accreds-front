@@ -14,6 +14,10 @@
     <input matInput placeholder="Organisme" name="bodyName" [(ngModel)]="accred.bodyName" />
   </mat-form-field>
 
+  <mat-form-field style="width: 100%;">
+    <input matInput placeholder="Nom de scène" name="stageName" [(ngModel)]="accred.stageName" />
+  </mat-form-field>
+
   <app-select-accred-type [allowCreation]="true" style="width: 100%;" [(selected)]="accred.accredTypeId"></app-select-accred-type>
 
   <app-select-vip-desk [allowCreation]="true" style="width: 100%;" [(selected)]="accred.preferedVipDesk"></app-select-vip-desk>
@@ -21,6 +25,8 @@
   <mat-form-field style="width: 100%;">
     <input matInput placeholder="Précisions" name="details" [(ngModel)]="accred.details" />
   </mat-form-field>
+
+  <mat-checkbox [(ngModel)]="accred.mustContactAdmin" name="mustContactAdmin">Demander au staff de vous contacter avant d'accepter le contact dans la convention</mat-checkbox>
 
   <br><br>
   <button mat-stroked-button style="width: 100%;" [disabled]="sending || !isValid" (click)="send()">

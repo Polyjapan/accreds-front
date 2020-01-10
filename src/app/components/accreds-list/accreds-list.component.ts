@@ -14,13 +14,13 @@ import {FullAccredType} from '../../data/accredType';
 export class AccredsListComponent implements OnInit {
   accreds: Observable<FullAccred[]>;
   statusToString = statusToString;
-  columns = ['name', 'bodyName', 'accredType', 'accredStatus'];
+  columns = ['name', 'bodyName', 'stageName', 'accredType', 'accredStatus'];
 
 
   constructor(private service: AccredsService, private types: AccredTypesService) { }
 
   ngOnInit() {
-    this.accreds = this.service.getFullAccreds();
+    this.accreds = this.service.getAccredsContinuous();
   }
 
 }

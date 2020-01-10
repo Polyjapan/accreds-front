@@ -5,7 +5,8 @@
 
   <p>Colonnes présentes :</p>
   <mat-checkbox name="hasName" [(ngModel)]="hasName">Prénom et nom</mat-checkbox><br>
-  <mat-checkbox name="hasName" [(ngModel)]="hasName">Organisme</mat-checkbox>
+  <mat-checkbox name="hasBody" [(ngModel)]="hasBody">Organisme</mat-checkbox><br>
+  <mat-checkbox name="hasStage" [(ngModel)]="hasStage">Nom de scène</mat-checkbox><br>
 
   <p>Exemple de format :</p>
   <pre>{{exampleFormat}}</pre>
@@ -14,6 +15,8 @@
     <mat-label>Saisie des lignes</mat-label>
     <textarea matInput rows="5" [placeholder]="exampleFormat.split('\n')[1]" name="lines" [(ngModel)]="lines"></textarea>
   </mat-form-field>
+
+  <mat-checkbox [(ngModel)]="mustContactAdmin" name="mustContactAdmin">Demander au staff de vous contacter avant d'accepter ces contacts dans la convention</mat-checkbox>
 
   <br><br>
   <button mat-stroked-button style="width: 100%;" [disabled]="sending || !(isFormatValid && areTypesValid && isContentValid)" (click)="send()">

@@ -14,7 +14,9 @@ export class CreateAccredBulkComponent {
   vipPref: number;
 
   hasName = true;
+  mustContactAdmin = false;
   hasBody = true;
+  hasStage = false;
   lines: string;
 
   @Input() successPopup = true;
@@ -26,24 +28,29 @@ export class CreateAccredBulkComponent {
   }
 
   get isFormatValid() {
-    return this.hasBody || this.hasName;
+    return this.hasBody || this.hasName || this.hasStage;
   }
 
   get areTypesValid() {
     return this.accredType && this.vipPref;
   }
 
+  get expectedCols() {
+    return (this.hasName ? 2 : 0) + (this.hasBody ? 1 : 0) + (this.hasStage ? 1 : 0);
+  }
+
   get isContentValid() {
     if (!this.lines) {
       return false;
     }
-    const expectedCols = (this.hasName ? 2 : 0) + (this.hasBody ? 1 : 0);
     const lines = this.lines.split('\n')
-      .map(line => line.trim())
       .filter(line => line.length > 0)
-      .map(line => line.split(',').map(col => col.trim()));
+      .map(line => line.split(/[,\t]/).map(col => col.trim()));
 
-    return lines.length > 0 && lines.every(cols => cols.length >= expectedCols);
+    console.log(lines);
+    lines.forEach((v, n) => console.log(v));
+
+    return lines.length > 0 && lines.every(cols => cols.length >= this.expectedCols);
   }
 
   get exampleFormat() {
@@ -62,6 +69,11 @@ export class CreateAccredBulkComponent {
       second += 'Super Association,';
     }
 
+    if (this.hasStage) {
+      first += 'Nom de scène,';
+      second += 'Elvis Presdab,';
+    }
+
     first += 'Remarques';
     second += 'Remarques Optionnelles, avec autant de virgules que souhaité';
     return first + '\n' + second;
@@ -73,20 +85,20 @@ export class CreateAccredBulkComponent {
     }
     this.sending = true;
 
-    const expectedCols = (this.hasName ? 2 : 0) + (this.hasBody ? 1 : 0);
     const lineSplit = this.lines.split('\n');
     const lines = lineSplit
       .map(lineText => {
-        if (lineText.trim().length < 1) {
+        if (lineText.length < 1) {
           return undefined;
         }
 
-        const line = lineText.trim().split(',').map(col => col.trim());
+        const line = lineText.split(/[,\t]/).map(col => col.trim());
         const accred = new Accred();
         accred.eventId = 0;
         accred.authoredBy = 0;
         accred.accredTypeId = this.accredType;
         accred.preferedVipDesk = this.vipPref;
+        accred.mustContactAdmin = this.mustContactAdmin;
 
         if (this.hasName) {
           accred.firstname = line[0];
@@ -97,8 +109,12 @@ export class CreateAccredBulkComponent {
           accred.bodyName = line[this.hasName ? 2 : 0];
         }
 
-        if (line.length > expectedCols) {
-          line.splice(0, expectedCols);
+        if (this.hasStage) {
+          accred.stageName = line[(this.hasName ? 2 : 0) + (this.hasBody ? 1 : 0)];
+        }
+
+        if (line.length > this.expectedCols) {
+          line.splice(0, this.expectedCols);
           accred.details = line.join(',');
         }
 
@@ -122,6 +138,7 @@ export class CreateAccredBulkComponent {
       if (this.successPopup) {
         Swal.fire('Accréditations créées', undefined, 'success');
       }
+      this.service.updateContinuousAccreds();
       this.finish.emit();
       this.sending = false;
       this.resetForm();

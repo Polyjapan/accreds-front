@@ -20,15 +20,20 @@ export class CreateUpdateAccredComponent implements OnInit, OnChanges {
   }
 
   get hasName() {
-    return this.accred && this.accred.firstname && this.accred.firstname.length >= 2 && this.accred.lastname && this.accred.lastname.length >= 2;
+    return this.accred && this.accred.firstname && this.accred.firstname.length >= 2 &&
+      this.accred.lastname && this.accred.lastname.length >= 2;
   }
 
   get hasBody() {
     return this.accred && this.accred.bodyName && this.accred.bodyName.length >= 2;
   }
 
+  get hasStage() {
+    return this.accred && this.accred.stageName && this.accred.stageName.length >= 2;
+  }
+
   get isValid() {
-    return this.accred && (this.hasBody || this.hasName) && this.accred.preferedVipDesk && this.accred.accredTypeId;
+    return this.accred && (this.hasBody || this.hasName || this.hasStage) && this.accred.preferedVipDesk && this.accred.accredTypeId;
   }
 
   send() {
@@ -42,6 +47,7 @@ export class CreateUpdateAccredComponent implements OnInit, OnChanges {
         Swal.fire('Accréditation créée', undefined, 'success');
       }
       this.finish.emit(succ);
+      this.service.updateContinuousAccreds();
       this.sending = false;
       this.resetForm();
     }, err => {

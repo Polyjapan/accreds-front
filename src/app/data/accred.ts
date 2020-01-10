@@ -3,14 +3,16 @@ import {FullAccredType} from './accredType';
 export class Accred {
   accredId?: number;
   eventId: number;
-  firstname: string = null;
-  lastname: string = null;
-  bodyName: string = null;
+  firstname: string = '';
+  lastname: string = '';
+  bodyName: string = '';
+  stageName: string = '';
   details?: string;
   authoredBy: number;
   accredTypeId: number;
   status: AccredStatus = AccredStatus.GRANTED;
   preferedVipDesk: number;
+  mustContactAdmin = false;
 }
 
 export class FullAccred {
