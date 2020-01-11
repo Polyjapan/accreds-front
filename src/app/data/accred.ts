@@ -18,6 +18,7 @@ export class Accred {
 export class FullAccred {
   accred: Accred;
   type: FullAccredType;
+  desk: string;
 }
 
 export enum AccredStatus {

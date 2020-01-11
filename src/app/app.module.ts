@@ -22,7 +22,7 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatProgressBarModule, MatProgressSpinnerModule,
-  MatSelectModule,
+  MatSelectModule, MatSortModule,
   MatTableModule
 } from '@angular/material';
 import {AuthService} from './services/auth.service';
@@ -91,6 +91,7 @@ export function tokenGetter() {
     MatInputModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
+    MatSortModule,
   ],
   entryComponents: [
     CreateAccredTypeComponent,

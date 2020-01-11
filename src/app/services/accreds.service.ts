@@ -6,13 +6,15 @@ import {Accred, FullAccred} from '../data/accred';
 import {map, switchMap} from 'rxjs/operators';
 import {FullAccredType} from '../data/accredType';
 import {AccredTypesService} from './accredTypes.service';
+import {VipDesksService} from './vipDesks.service';
+import {VipDesk} from '../data/vipDesk';
 
 @Injectable({providedIn: 'root'})
 export class AccredsService {
   private stream = new BehaviorSubject<FullAccred[]>([]);
 
 
-  constructor(private http: HttpClient, private types: AccredTypesService) {
+  constructor(private http: HttpClient, private types: AccredTypesService, private desks: VipDesksService) {
   }
 
   getAccreds(): Observable<Accred[]> {
@@ -34,14 +36,18 @@ export class AccredsService {
 
   getFullAccreds(): Observable<FullAccred[]> {
     return this.getAccreds().pipe(
-      switchMap(accreds => this.types.getAccredTypes().pipe(map(types => {
-        const typeMap = new Map<number, FullAccredType>();
-        types.forEach(tpe => typeMap.set(tpe.accredType.accredTypeId, tpe));
+      switchMap(accreds => this.desks.getVipDesks().pipe(
+        switchMap(desks => this.types.getAccredTypes().pipe(
+          map(types => {
+            const typeMap = new Map<number, FullAccredType>();
+            const deskMap = new Map<number, string>();
+            types.forEach(tpe => typeMap.set(tpe.accredType.accredTypeId, tpe));
+            desks.forEach(desk => deskMap.set(desk.vipDeskId, desk.vipDeskName));
 
-        return accreds.map(accred => {
-          return {accred, type: typeMap.get(accred.accredTypeId)};
-        });
-      }))));
+            return accreds.map(accred => {
+              return {accred, type: typeMap.get(accred.accredTypeId), desk: deskMap.get(accred.preferedVipDesk)};
+            });
+          }))))));
   }
 
   createUpdateAccred(accred: Accred): Observable<number> {

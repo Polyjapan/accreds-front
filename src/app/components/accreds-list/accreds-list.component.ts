@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Accred, FullAccred, statusToString} from '../../data/accred';
 import {AccredsService} from '../../services/accreds.service';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {UpdateAccredModalComponent} from '../update-accred-modal/update-accred-modal.component';
 import Swal from 'sweetalert2';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-accreds-list',
@@ -12,23 +13,46 @@ import Swal from 'sweetalert2';
   styleUrls: ['./accreds-list.component.css']
 })
 export class AccredsListComponent implements OnInit {
-  accreds: Observable<FullAccred[]>;
+  accreds: Observable<MatTableDataSource<FullAccred>>;
   statusToString = statusToString;
-  columns = ['name', 'bodyName', 'stageName', 'accredType', 'accredStatus', 'actions'];
+  columns = ['name', 'bodyName', 'stageName', 'accredType', 'preferedDesk', 'accredStatus', 'actions'];
+  deleting: number = undefined;
 
+  dataAccessor(data: FullAccred, col: string) {
+    switch (col) {
+      case 'name':
+        return data.accred.firstname + ' ' + data.accred.lastname;
+      case 'bodyName':
+        return data.accred.bodyName;
+      case 'stageName':
+        return data.accred.stageName;
+      case 'accredType':
+        return data.type ? data.type.accredType.accredTypeName : 'Chargement...';
+      case 'preferedDesk':
+        return data.desk;
+      case 'accredStatus':
+        return statusToString(data.accred.status);
+    }
+  }
+
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(private service: AccredsService, private dialog: MatDialog) {
   }
 
   ngOnInit() {
-    this.accreds = this.service.getAccredsContinuous();
+    this.accreds = this.service.getAccredsContinuous().pipe(map(array => {
+      const source = new MatTableDataSource(array);
+      source.sort = this.sort;
+      source.sortingDataAccessor = this.dataAccessor;
+      return source;
+    }));
   }
 
   update(id: number) {
     this.dialog.open(UpdateAccredModalComponent, {data: id});
   }
 
-  deleting: number = undefined;
 
   delete(accred: Accred) {
     const name = (accred.firstname && accred.lastname) ? (accred.firstname + ' ' + accred.lastname) : (accred.stageName ? accred.stageName : (accred.bodyName ? accred.bodyName : 'Anone Yme'));
