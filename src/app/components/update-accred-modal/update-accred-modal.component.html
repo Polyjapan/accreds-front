@@ -1,0 +1,5 @@
+<h2 mat-dialog-title>Mettre à jour une accréditation</h2>
+
+<mat-spinner *ngIf="!accred"></mat-spinner>
+
+<app-create-update-accred *ngIf="accred" [accred]="accred" (finish)="close()"></app-create-update-accred>

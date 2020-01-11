@@ -38,6 +38,7 @@ import { CreateUpdateAccredComponent } from './components/create-update-accred/c
 import {CreateVipDeskComponent} from './components/selectors/select-vip-desk/create-vip-desk/create-vip-desk.component';
 import {SelectVipDeskComponent} from './components/selectors/select-vip-desk/select-vip-desk.component';
 import { CreateAccredBulkComponent } from './components/create-accred-bulk/create-accred-bulk.component';
+import { UpdateAccredModalComponent } from './components/update-accred-modal/update-accred-modal.component';
 
 
 export function tokenGetter() {
@@ -58,7 +59,8 @@ export function tokenGetter() {
     CreateUpdateAccredComponent,
     CreateVipDeskComponent,
     SelectVipDeskComponent,
-    CreateAccredBulkComponent
+    CreateAccredBulkComponent,
+    UpdateAccredModalComponent
   ],
   imports: [
     BrowserModule,
@@ -92,7 +94,8 @@ export function tokenGetter() {
   ],
   entryComponents: [
     CreateAccredTypeComponent,
-    CreateVipDeskComponent
+    CreateVipDeskComponent,
+    UpdateAccredModalComponent
   ],
   providers: [
     AuthService,

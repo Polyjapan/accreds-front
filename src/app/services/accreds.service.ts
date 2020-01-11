@@ -53,6 +53,10 @@ export class AccredsService {
     }
   }
 
+  deleteAccred(accred: number): Observable<void> {
+    return this.http.delete<void>(environment.apiurl + '/accreds/' + accred);
+  }
+
   createAccreds(accreds: Accred[]) {
     return this.http.post<void>(environment.apiurl + '/accreds/multiple', accreds);
   }

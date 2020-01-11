@@ -3,6 +3,7 @@ import {Accred} from '../../data/accred';
 import {isNullOrUndefined} from 'util';
 import {AccredsService} from '../../services/accreds.service';
 import Swal from 'sweetalert2';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-create-update-accred',
@@ -16,7 +17,7 @@ export class CreateUpdateAccredComponent implements OnInit, OnChanges {
 
   sending = false;
 
-  constructor(private service: AccredsService) {
+  constructor(private service: AccredsService, private auth: AuthService) {
   }
 
   get hasName() {
@@ -42,9 +43,39 @@ export class CreateUpdateAccredComponent implements OnInit, OnChanges {
     }
     this.sending = true;
 
+    if (this.accred.authoredBy && this.auth.getToken().userId !== this.accred.authoredBy) {
+      Swal.fire({
+        input: 'text',
+        inputValidator: (inputValue: string) => {
+          return (!inputValue || inputValue !== 'Mes intentions sont mauvaises') && 'Merci de saisir la valeur demandée';
+        },
+        titleText: 'Confirmer vos mauvaises intentions',
+        html: 'Vous êtes en train de modifier une accred créée par une autre personne que vous. Si c\'est bien ce que vous voulez faire, ' +
+          'tapez <b>Mes intentions sont mauvaises</b> dans la boite ci dessous',
+        showConfirmButton: true,
+        showCancelButton: true
+      }).then(result => {
+        if (result && result.value && result.value === 'Mes intentions sont mauvaises') {
+          this.doSend();
+        } else {
+          this.sending = false;
+        }
+      });
+    } else {
+      this.doSend();
+    }
+  }
+
+  private doSend() {
+    if (!this.isValid) {
+      this.sending = false;
+      return;
+    }
+
     this.service.createUpdateAccred(this.accred).subscribe(succ => {
+      const word = this.accred.accredId ? 'modifiée' : 'créée';
       if (this.successPopup) {
-        Swal.fire('Accréditation créée', undefined, 'success');
+        Swal.fire('Accréditation ' + word, undefined, 'success');
       }
       this.finish.emit(succ);
       this.service.updateContinuousAccreds();
