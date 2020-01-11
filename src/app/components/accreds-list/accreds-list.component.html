@@ -41,7 +41,17 @@
     <td mat-cell *matCellDef="let e"> {{dataAccessor(e, 'accredStatus')}} </td>
   </ng-container>
 
-  <ng-container matColumnDef="actions">
+  <ng-container matColumnDef="author">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Comité de contact</th>
+    <td mat-cell *matCellDef="let e"> {{dataAccessor(e, 'author')}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="authorPhone">
+    <th mat-header-cell *matHeaderCellDef> Tel. Comité</th>
+    <td mat-cell *matCellDef="let e"> {{dataAccessor(e, 'authorPhone')}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="adminActions">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element">
       <button mat-icon-button (click)="update(element.accred.accredId)">
@@ -53,6 +63,24 @@
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="columns"></tr>
-  <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+  <ng-container matColumnDef="staffActions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-raised-button (click)="view(element)">
+        <mat-icon>check</mat-icon> Infos et Accueil du contact
+      </button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="particularities">
+    <th mat-header-cell *matHeaderCellDef>Particularités</th>
+    <td mat-cell *matCellDef="let accred">
+      <mat-icon *ngIf="accred.type && accred.type.accredType.requiresSignature" matTooltip="Une signature est requise">face</mat-icon>
+      <mat-icon *ngIf="accred.type && accred.type.accredType.isTemporary" matTooltip="Cette accréditation est temporaire">timer</mat-icon>
+      <mat-icon *ngIf="accred.accred.mustContactAdmin" matTooltip="Le comité responsable doit être contacté avant d'accepter la personne">call</mat-icon>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="viewType === 'admin' ? columnsAdmin : columnsStaff"></tr>
+  <tr mat-row *matRowDef="let row; columns: viewType === 'admin' ? columnsAdmin : columnsStaff;"></tr>
 </table>

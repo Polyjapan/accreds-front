@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Accred, FullAccred, statusToString} from '../../data/accred';
 import {AccredsService} from '../../services/accreds.service';
 import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {UpdateAccredModalComponent} from '../update-accred-modal/update-accred-modal.component';
 import Swal from 'sweetalert2';
+import {AccredStaffDetailsComponent} from '../accred-staff-details/accred-staff-details.component';
 
 @Component({
   selector: 'app-accreds-list',
@@ -13,7 +14,12 @@ import Swal from 'sweetalert2';
 export class AccredsListComponent implements OnInit {
   accreds: MatTableDataSource<FullAccred> = new MatTableDataSource([]);
   statusToString = statusToString;
-  columns = ['name', 'bodyName', 'stageName', 'accredType', 'preferedDesk', 'accredStatus', 'actions'];
+
+  @Input() viewType: 'admin' | 'staff';
+
+  columnsAdmin = ['name', 'bodyName', 'stageName', 'accredType', 'preferedDesk', 'particularities', 'author', 'adminActions'];
+  columnsStaff = ['name', 'bodyName', 'stageName', 'accredType', 'author', 'accredStatus', 'particularities', 'staffActions'];
+
   deleting: number = undefined;
 
   filterName: string;
@@ -37,6 +43,10 @@ export class AccredsListComponent implements OnInit {
         return data.desk;
       case 'accredStatus':
         return statusToString(data.accred.status);
+      case 'author':
+        return data.author ? data.author.details.firstName + ' ' + data.author.details.lastName : 'Chargement...';
+      case 'authorPhone':
+        return data.author ? data.author.details.phoneNumber : 'Chargement...';
     }
   }
 
@@ -73,7 +83,9 @@ export class AccredsListComponent implements OnInit {
 
 
   delete(accred: Accred) {
-    const name = (accred.firstname && accred.lastname) ? (accred.firstname + ' ' + accred.lastname) : (accred.stageName ? accred.stageName : (accred.bodyName ? accred.bodyName : 'Anone Yme'));
+    const name = (accred.firstname && accred.lastname) ?
+      (accred.firstname + ' ' + accred.lastname) : (accred.stageName ?
+        accred.stageName : (accred.bodyName ? accred.bodyName : 'Anone Yme'));
 
     this.deleting = accred.accredId;
 
@@ -100,6 +112,10 @@ export class AccredsListComponent implements OnInit {
         this.deleting = undefined;
       }
     });
+  }
+
+  view(element: FullAccred) {
+    this.dialog.open(AccredStaffDetailsComponent, {data: element});
   }
 }
 

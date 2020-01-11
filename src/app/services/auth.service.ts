@@ -2,10 +2,12 @@ import {Injectable} from '@angular/core';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {Router, UrlTree} from '@angular/router';
 import {environment} from '../../environments/environment';
+import {LoginService} from './login.service';
 
 export class UserSession {
-  groups: string[];
-  userId: number;
+  groups?: string[];
+  userId?: number;
+  staffUserId?: number;
 }
 
 @Injectable({
@@ -14,6 +16,10 @@ export class UserSession {
 export class AuthService {
 
   constructor(private jwtHelper: JwtHelperService, private route: Router) {
+  }
+
+  get isStaff() {
+    return this.getToken().staffUserId;
   }
 
   login(token: string): UrlTree {
@@ -43,21 +49,15 @@ export class AuthService {
     return false;
   }
 
-  private storeNextAction(action: string) {
-    localStorage.setItem('_post_login_action', action);
-  }
-
-  private loadNextAction(): string {
-    const act = localStorage.getItem('_post_login_action');
-    localStorage.removeItem('_post_login_action');
-
-    return act;
-  }
-
   public logout(): void {
     // Remove tokens and expiry time from localStorage
     localStorage.removeItem('id_token');
 
+    window.location.replace(environment.auth.apiurl + '/logout?app=' + environment.auth.clientId);
+  }
+
+  public switchToStaff(token: string): void {
+    localStorage.setItem('id_token', token);
     window.location.replace(environment.auth.apiurl + '/logout?app=' + environment.auth.clientId);
   }
 
@@ -94,5 +94,16 @@ export class AuthService {
       console.log(e);
       return false;
     }
+  }
+
+  private storeNextAction(action: string) {
+    localStorage.setItem('_post_login_action', action);
+  }
+
+  private loadNextAction(): string {
+    const act = localStorage.getItem('_post_login_action');
+    localStorage.removeItem('_post_login_action');
+
+    return act;
   }
 }

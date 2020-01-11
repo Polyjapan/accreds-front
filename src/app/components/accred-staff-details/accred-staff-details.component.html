@@ -1,0 +1,104 @@
+<h2 mat-dialog-title>Détails d'un contact</h2>
+
+
+<mat-dialog-content>
+
+  <h3>Identité du contact</h3>
+  <ul>
+    <li><b>Nom : </b>{{accred.accred.firstname}} {{accred.accred.lastname}}</li>
+    <li><b>Nom de scène : </b>{{accred.accred.stageName}}</li>
+    <li><b>Organisme : </b>{{accred.accred.bodyName}}</li>
+    <li><b>Informations : </b>{{accred.accred.details}}</li>
+    <li><b>Comité de contact : </b>{{accred.author.details.firstName}} {{accred.author.details.lastName}}
+      (tel: {{accred.author.details.phoneNumber}})
+    </li>
+  </ul>
+
+  <h3>Accueil du contact</h3>
+
+  <ng-container *ngIf="accred.accred.status !== Status.DELIVERED">
+    <p *ngIf="accred.accred.status === Status.GRANTED">Ce contact n'a pas encore été accueilli. Vous pouvez accueillir
+      ce contact.</p>
+    <p *ngIf="accred.accred.status === Status.RECOVERED">Ce contact a rendu son accréditation temporaire. Vous pouvez
+      accueillir ce contact à nouveau.</p>
+
+    <ng-container *ngIf="accred.type.accredType.requiresSignature">
+      <p>
+        <mat-icon>warning</mat-icon>
+        <mat-icon>face</mat-icon>
+        Cette accréditation demande une signature pour pouvoir être délivrée.<br> Merci de faire signer le contact sur
+        la
+        feuille de signature pour délivrer l'accréditation.
+      </p>
+
+      <mat-checkbox [(ngModel)]="signed">Le contact a signé</mat-checkbox>
+
+    </ng-container>
+
+    <ng-container *ngIf="accred.type.accredType.isTemporary">
+      <p>
+        <mat-icon>warning</mat-icon>
+        <mat-icon>timer</mat-icon>
+        Cette accréditation est temporaire.<br> Merci d'informer le contact du fait qu'il doit impérativement revenir à
+        cet
+        accueil VIP avant de quitter les lieux.
+      </p>
+
+      <mat-checkbox [(ngModel)]="informed">Le contact a été informé</mat-checkbox>
+    </ng-container>
+
+    <ng-container *ngIf="accred.accred.mustContactAdmin">
+      <p>
+        <mat-icon>warning</mat-icon>
+        <mat-icon>call</mat-icon>
+        Cette accréditation nécessite de contacter le comité responsable pour pouvoir être délivrée.
+        <br>Merci de contacter le comité responsable au <b>{{accred.author.details.phoneNumber}}</b> avant de délivrer
+        l'accréditation.
+      </p>
+
+      <mat-checkbox [(ngModel)]="contacted">Le comité a été appelé et a donné l'autorisation de laisser rentrer la
+        personne
+      </mat-checkbox>
+    </ng-container>
+
+  </ng-container>
+  <ng-container *ngIf="accred.accred.status === Status.DELIVERED && accred.type.accredType.isTemporary">
+    <p>Le contact a été accueilli et doit rendre son accréditation.
+      <br>L'accréditation de ce contact est : <b>{{accred.type.physicalAccredType.physicalAccredTypeName}}</b></p>
+
+
+    <mat-checkbox [(ngModel)]="recovered">J'ai bien récupéré l'accréditation du contact
+    </mat-checkbox>
+  </ng-container>
+  <ng-container *ngIf="accred.accred.status === Status.DELIVERED && !accred.type.accredType.isTemporary">
+    <p>Le contact a déjà été accueilli. Vous n'avez plus rien à faire :D.</p>
+
+    <p><i>Si le contact souhaite rendre ses accréditations, vous pouvez l'informer que cela n'est pas nécessaire.
+      En cas de problème, n'hésitez pas à contacter le PC.</i></p>
+  </ng-container>
+
+  <ng-container *ngIf="accred.accred.status !== Status.DELIVERED || accred.type.accredType.isTemporary">
+    <p>Si vous avez des remarques à ajouter, merci de les noter ici:</p>
+    <mat-form-field style="width: 100%;">
+      <textarea matInput [(ngModel)]="remarks" placeholder="Remarques optionnelles..."></textarea>
+    </mat-form-field>
+  </ng-container>
+</mat-dialog-content>
+
+<mat-dialog-actions *ngIf="accred.accred.status !== Status.DELIVERED || accred.type.accredType.isTemporary">
+  <button *ngIf="accred.accred.status !== Status.DELIVERED" mat-stroked-button
+          [disabled]="!canValidate || working" style="width: 100%;"
+          (click)="confirmArrival()">
+    Accueillir le contact {{!canValidate ? '(actions requises)' : ''}}
+
+    <mat-progress-spinner *ngIf="working" mode="indeterminate" diameter="20" class="spinner"></mat-progress-spinner>
+  </button>
+
+  <button *ngIf="accred.accred.status === Status.DELIVERED" mat-stroked-button
+          [disabled]="!recovered || working" style="width: 100%;"
+          (click)="confirmDeparture()">
+    Confirmer le départ du contact
+
+    <mat-progress-spinner *ngIf="working" mode="indeterminate" diameter="20" class="spinner"></mat-progress-spinner>
+  </button>
+</mat-dialog-actions>

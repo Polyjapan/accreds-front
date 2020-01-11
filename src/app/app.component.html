@@ -11,6 +11,7 @@
   <a mat-button [routerLink]="['/']">GuestList Japan Impact</a>
   <span class="spacer"></span>
 
+  <button mat-button (click)="switchToStaff()" *ngIf="isLoggedIn && !isStaff"><mat-icon>person_outline</mat-icon> Mode Staff</button>
   <button mat-button (click)="logout()" *ngIf="isLoggedIn"><mat-icon>exit_to_app</mat-icon> Déconnexion</button>
 </mat-toolbar>
 

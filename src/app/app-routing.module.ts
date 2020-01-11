@@ -5,6 +5,7 @@ import {LoginFailedComponent} from './components/accounts/login-failed/login-fai
 import {PermissionAuthGuard} from './services/permission-auth-guard.service';
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {HomepageComponent} from './components/homepage/homepage.component';
+import {HomepageStaffComponent} from './components/homepage/homepage-staff/homepage-staff.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   {path: 'login-failed', component: LoginFailedComponent},
   {path: 'login-failed/:details', component: LoginFailedComponent},
   {path: '', component: HomepageComponent, canActivate: [PermissionAuthGuard]},
+  {path: 'staff', component: HomepageStaffComponent, canActivate: [PermissionAuthGuard]}, // temporary ?
 
   // Protected paths
 /*

@@ -1,4 +1,5 @@
 import {FullAccredType} from './accredType';
+import {User} from './user';
 
 export class Accred {
   accredId?: number;
@@ -18,6 +19,7 @@ export class Accred {
 export class FullAccred {
   accred: Accred;
   type: FullAccredType;
+  author: User;
   desk: string;
 }
 
@@ -28,11 +30,11 @@ export enum AccredStatus {
 export function statusToString(status: AccredStatus) {
   switch (status) {
     case AccredStatus.GRANTED:
-      return 'Prêt';
+      return 'Prêt à être accueilli';
     case AccredStatus.DELIVERED:
-      return 'Délivré';
+      return 'Accueilli';
     case AccredStatus.RECOVERED:
-      return 'Récupéré';
+      return 'Parti';
   }
 
 }

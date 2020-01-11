@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Passage en mode staff</h2>
+
+
+<mat-dialog-content>
+  <p>Indiquez une entrée VIP et un nom permettant de reconnaître ce poste de manière <b>unique</b> pour passer en mode
+    staff.</p>
+  <p>Le mode staff fermera votre session Japan Impact.</p>
+
+  <app-select-vip-desk label="Entrée VIP" [(selected)]="desk"></app-select-vip-desk>
+  <mat-form-field style="width: 100%;">
+    <input matInput required placeholder="Nom du poste" [(ngModel)]="name"/>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-stroked-button style="width: 100%;" [disabled]="!isValid || sending" (click)="submit()">Passer en mode
+    staff
+    <mat-spinner *ngIf="sending" diameter="20" class="spinner"></mat-spinner>
+  </button>
+</mat-dialog-actions>

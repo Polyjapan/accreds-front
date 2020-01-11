@@ -1,1 +1,2 @@
-<app-homepage-comite></app-homepage-comite>
+<app-homepage-comite *ngIf="!isStaff"></app-homepage-comite>
+<app-homepage-staff *ngIf="isStaff"></app-homepage-staff>

@@ -23,7 +23,7 @@ import {
   MatInputModule,
   MatProgressBarModule, MatProgressSpinnerModule,
   MatSelectModule, MatSortModule,
-  MatTableModule
+  MatTableModule, MatTooltipModule
 } from '@angular/material';
 import {AuthService} from './services/auth.service';
 import {LoginService} from './services/login.service';
@@ -39,6 +39,9 @@ import {CreateVipDeskComponent} from './components/selectors/select-vip-desk/cre
 import {SelectVipDeskComponent} from './components/selectors/select-vip-desk/select-vip-desk.component';
 import { CreateAccredBulkComponent } from './components/create-accred-bulk/create-accred-bulk.component';
 import { UpdateAccredModalComponent } from './components/update-accred-modal/update-accred-modal.component';
+import { HomepageStaffComponent } from './components/homepage/homepage-staff/homepage-staff.component';
+import { AccredStaffDetailsComponent } from './components/accred-staff-details/accred-staff-details.component';
+import { SwitchToStaffComponent } from './components/switch-to-staff/switch-to-staff.component';
 
 
 export function tokenGetter() {
@@ -60,7 +63,10 @@ export function tokenGetter() {
     CreateVipDeskComponent,
     SelectVipDeskComponent,
     CreateAccredBulkComponent,
-    UpdateAccredModalComponent
+    UpdateAccredModalComponent,
+    HomepageStaffComponent,
+    AccredStaffDetailsComponent,
+    SwitchToStaffComponent
   ],
   imports: [
     BrowserModule,
@@ -92,11 +98,14 @@ export function tokenGetter() {
     MatCheckboxModule,
     MatProgressSpinnerModule,
     MatSortModule,
+    MatTooltipModule,
   ],
   entryComponents: [
     CreateAccredTypeComponent,
     CreateVipDeskComponent,
-    UpdateAccredModalComponent
+    UpdateAccredModalComponent,
+    AccredStaffDetailsComponent,
+    SwitchToStaffComponent
   ],
   providers: [
     AuthService,
