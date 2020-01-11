@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {CreateAccredModalComponent} from '../../create-accred-modal/create-accred-modal.component';
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'app-homepage-comite',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomepageComiteComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit() {
   }
 
+  createAccred() {
+    this.dialog.open(CreateAccredModalComponent);
+  }
 }

@@ -1,6 +1,6 @@
 <form *ngIf="accred">
 
-  <div fxLayout="row" fxLayoutGap="20px">
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
     <mat-form-field fxFlex>
       <input matInput placeholder="Prénom" name="firstname" [(ngModel)]="accred.firstname" />
     </mat-form-field>
@@ -26,7 +26,9 @@
     <input matInput placeholder="Précisions" name="details" [(ngModel)]="accred.details" />
   </mat-form-field>
 
-  <mat-checkbox [(ngModel)]="accred.mustContactAdmin" name="mustContactAdmin">Demander au staff de vous contacter avant d'accepter le contact dans la convention</mat-checkbox>
+  <mat-checkbox [(ngModel)]="accred.mustContactAdmin" name="mustContactAdmin" style="white-space: normal !important;">
+    Demander au staff de vous contacter avant d'accepter le contact dans la convention
+  </mat-checkbox>
 
   <br><br>
   <button mat-stroked-button style="width: 100%;" [disabled]="sending || !isValid" (click)="send()">

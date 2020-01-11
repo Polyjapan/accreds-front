@@ -6,6 +6,8 @@ import {AuthService} from './services/auth.service';
 import {RouterOutlet} from '@angular/router';
 import {MatDialog} from '@angular/material';
 import {SwitchToStaffComponent} from './components/switch-to-staff/switch-to-staff.component';
+import {LoginService} from './services/login.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-root',
@@ -20,11 +22,15 @@ export class AppComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private auth: AuthService, private dialog: MatDialog) {
+  constructor(private breakpointObserver: BreakpointObserver, private auth: AuthService, private dialog: MatDialog, private login: LoginService) {
   }
 
   get isLoggedIn() {
     return this.auth.isAuthenticated();
+  }
+
+  get isStaff() {
+    return this.auth.isStaff;
   }
 
   activateRoute(event, elem: RouterOutlet) {
@@ -35,11 +41,25 @@ export class AppComponent {
     this.auth.logout();
   }
 
-  get isStaff() {
-    return this.auth.isStaff;
-  }
-
   switchToStaff() {
     this.dialog.open(SwitchToStaffComponent);
+  }
+
+  generateDelegationKey() {
+    this.login.getDelegationKey().subscribe(res => {
+      const key = res.slice(0, 4) + '-' + res.slice(4);
+
+      Swal.fire({
+        title: 'Clé de délégation',
+        html: `
+<p>Voici votre clé de délégation. Elle est valable <b>120 secondes</b>.
+ Elle permet à un staff de créer une accréditation en votre nom en cas d\'urgence.</p><h2><code>` + key + `</code></h2>`,
+        timer: 100000,
+        timerProgressBar: true
+      });
+    }, err => {
+      console.log(err);
+      Swal.fire('Oups', 'Impossible d\'obtenir une clé de délégation. Réessayez plus tard.', 'error')
+    });
   }
 }

@@ -68,6 +68,10 @@ export class AccredsService {
     }
   }
 
+  createAccredDelegated(accred: Accred, delegationKey: string): Observable<number> {
+    return this.http.post<number>(environment.apiurl + '/accreds/delegated', {accred, delegationKey});
+  }
+
   deleteAccred(accred: number): Observable<void> {
     return this.http.delete<void>(environment.apiurl + '/accreds/' + accred);
   }

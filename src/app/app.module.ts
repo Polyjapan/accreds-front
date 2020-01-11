@@ -15,12 +15,12 @@ import {NotFoundComponent} from './components/not-found/not-found.component';
 import {AppRoutingModule} from './app-routing.module';
 import {JwtModule} from '@auth0/angular-jwt';
 import {environment} from '../environments/environment';
-import {FlexModule} from '@angular/flex-layout';
+import {FlexLayoutModule, FlexModule} from '@angular/flex-layout';
 import {
   MatCardModule, MatCheckboxModule,
   MatDialogModule,
   MatFormFieldModule,
-  MatInputModule,
+  MatInputModule, MatMenuModule,
   MatProgressBarModule, MatProgressSpinnerModule,
   MatSelectModule, MatSortModule,
   MatTableModule, MatTooltipModule
@@ -42,6 +42,7 @@ import { UpdateAccredModalComponent } from './components/update-accred-modal/upd
 import { HomepageStaffComponent } from './components/homepage/homepage-staff/homepage-staff.component';
 import { AccredStaffDetailsComponent } from './components/accred-staff-details/accred-staff-details.component';
 import { SwitchToStaffComponent } from './components/switch-to-staff/switch-to-staff.component';
+import { CreateAccredModalComponent } from './components/create-accred-modal/create-accred-modal.component';
 
 
 export function tokenGetter() {
@@ -66,7 +67,8 @@ export function tokenGetter() {
     UpdateAccredModalComponent,
     HomepageStaffComponent,
     AccredStaffDetailsComponent,
-    SwitchToStaffComponent
+    SwitchToStaffComponent,
+    CreateAccredModalComponent
   ],
   imports: [
     BrowserModule,
@@ -99,13 +101,16 @@ export function tokenGetter() {
     MatProgressSpinnerModule,
     MatSortModule,
     MatTooltipModule,
+    MatMenuModule,
+    FlexLayoutModule,
   ],
   entryComponents: [
     CreateAccredTypeComponent,
     CreateVipDeskComponent,
     UpdateAccredModalComponent,
     AccredStaffDetailsComponent,
-    SwitchToStaffComponent
+    SwitchToStaffComponent,
+    CreateAccredModalComponent
   ],
   providers: [
     AuthService,

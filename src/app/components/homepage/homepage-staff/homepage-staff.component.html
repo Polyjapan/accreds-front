@@ -1,4 +1,18 @@
 <h1>Accueil VIP</h1>
+
+<mat-card *ngIf="!isStaff" class="admin">
+  <mat-card-title>ATTENTION !</mat-card-title>
+  <mat-card-content>
+    <p>Vous êtes connecté avec votre compte de comité. <b>Ne laissez pas cet ordinateur à un staff pour
+      l'accueil de personnes.</b></p>
+    <p>Pour passer en mode staff, et pouvoir laisser ce périphérique à un staff, utilisez l'option dédiée dans
+      la barre de menu.</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button [routerLink]="['/']" mat-stroked-button>Retour</button>
+  </mat-card-actions>
+</mat-card>
+
 <!--
 <div fxLayoutGap="20px" fxLayout="row" fxLayout.lt-md="column">
 
@@ -23,6 +37,16 @@
 
 
 <mat-card style="margin-top: 20px;">
-  <mat-card-title>Liste des invités</mat-card-title>
+
+  <mat-card-title>Liste des invités
+    <button mat-raised-button style="margin-left: 30px;" (click)="createAccred()">Créer une accréditation</button>
+  </mat-card-title>
+
+
+  <p>Si la personne n'est pas dans la liste, mais qu'elle est supposée l'être, contactez un comité puis créez une
+    accréditation. Vous pourrez ensuite trouver la personne dans la liste et l'accueillir normalement.
+  </p>
+
+
   <app-accreds-list viewType="staff"></app-accreds-list>
 </mat-card>

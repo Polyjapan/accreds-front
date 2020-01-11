@@ -1,6 +1,6 @@
 <h1>Accueil accréditations</h1>
 
-<div fxLayoutGap="20px" fxLayout="row" fxLayout.lt-md="column">
+<div fxLayoutGap="20px" fxLayout="row" fxHide.lt-md>
 
   <div fxFlex>
     <mat-card>
@@ -20,6 +20,7 @@
 
 </div>
 
+<button mat-stroked-button style="width: 100%;" (click)="createAccred()"><mat-icon>add</mat-icon> Créer une accréditation</button>
 
 
 <mat-card style="margin-top: 20px;">
