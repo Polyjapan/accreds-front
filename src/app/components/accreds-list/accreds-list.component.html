@@ -1,4 +1,16 @@
-<table mat-table [dataSource]="accreds | async" matSort style="width: 100%;">
+<form fxLayout="row" fxLayout.lt-md="col" fxLayoutGap="20px">
+  <mat-form-field fxFlex>
+    <input matInput placeholder="Filtrer par nom" [(ngModel)]="filterName" (ngModelChange)="applyFilter()"
+           name="filterName">
+  </mat-form-field>
+
+  <div fxFlex>
+    <app-select-accred-type label="Filtrer par type" [allowEmpty]="true" [(selected)]="filterAccredType"
+                            (selectedChange)="applyFilter()"></app-select-accred-type>
+  </div>
+</form>
+
+<table mat-table [dataSource]="accreds" matSort style="width: 100%;">
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Prénom Nom</th>
     <td mat-cell *matCellDef="let e"> {{dataAccessor(e, 'name')}} </td>

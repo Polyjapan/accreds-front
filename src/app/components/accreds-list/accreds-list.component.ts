@@ -1,11 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs';
 import {Accred, FullAccred, statusToString} from '../../data/accred';
 import {AccredsService} from '../../services/accreds.service';
 import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {UpdateAccredModalComponent} from '../update-accred-modal/update-accred-modal.component';
 import Swal from 'sweetalert2';
-import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-accreds-list',
@@ -13,10 +11,17 @@ import {map} from 'rxjs/operators';
   styleUrls: ['./accreds-list.component.css']
 })
 export class AccredsListComponent implements OnInit {
-  accreds: Observable<MatTableDataSource<FullAccred>>;
+  accreds: MatTableDataSource<FullAccred> = new MatTableDataSource([]);
   statusToString = statusToString;
   columns = ['name', 'bodyName', 'stageName', 'accredType', 'preferedDesk', 'accredStatus', 'actions'];
   deleting: number = undefined;
+
+  filterName: string;
+  filterAccredType: number;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+  constructor(private service: AccredsService, private dialog: MatDialog) {
+  }
 
   dataAccessor(data: FullAccred, col: string) {
     switch (col) {
@@ -35,18 +40,31 @@ export class AccredsListComponent implements OnInit {
     }
   }
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
-
-  constructor(private service: AccredsService, private dialog: MatDialog) {
+  applyFilter() {
+    this.accreds.filter = this.filterAccredType || this.filterName ? 'enabled' : undefined;
   }
 
   ngOnInit() {
-    this.accreds = this.service.getAccredsContinuous().pipe(map(array => {
-      const source = new MatTableDataSource(array);
-      source.sort = this.sort;
-      source.sortingDataAccessor = this.dataAccessor;
-      return source;
-    }));
+    this.accreds.sort = this.sort;
+    this.accreds.sortingDataAccessor = this.dataAccessor;
+    this.accreds.filterPredicate = (data: FullAccred, _: string) => {
+      if (this.filterAccredType && data.accred.accredTypeId !== this.filterAccredType) {
+        return false;
+      }
+
+      if (!this.filterName) {
+        return true;
+      }
+
+      const name = data.accred.firstname + ' ' + data.accred.lastname;
+      const filter = this.filterName.toLowerCase().trim();
+
+      return name.toLowerCase().includes(filter) ||
+        data.accred.bodyName.toLowerCase().includes(filter) || data.accred.stageName.toLowerCase().includes(filter);
+    };
+
+    this.service.getAccredsContinuous()
+      .subscribe(data => this.accreds.data = data);
   }
 
   update(id: number) {

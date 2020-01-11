@@ -13,6 +13,7 @@ import {CreateAccredTypeComponent} from './create-accred-type/create-accred-type
 export class SelectAccredTypeComponent implements OnInit {
   @Input() label = 'Type d\'accréditation';
   @Input() allowCreation = false;
+  @Input() allowEmpty = false;
 
   @Input() selected: number;
   @Output() selectedChange = new EventEmitter<number>();
