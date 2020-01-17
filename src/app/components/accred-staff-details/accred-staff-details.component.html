@@ -52,8 +52,8 @@
         <mat-icon>warning</mat-icon>
         <mat-icon>call</mat-icon>
         Cette accréditation nécessite de contacter le comité responsable pour pouvoir être délivrée.
-        <br>Merci de contacter le comité responsable au <b>{{accred.author.details.phoneNumber}}</b> avant de délivrer
-        l'accréditation.
+        <br>Merci de contacter le comité responsable <b>{{accred.author.details.firstName}} {{accred.author.details.lastName}}</b> au <b>{{accred.author.details.phoneNumber}}</b> avant de délivrer
+        l'accréditation.<br>En l'absence de réponse ou si impossible d'appeler, <b>contactez le PC.</b>
       </p>
 
       <mat-checkbox [(ngModel)]="contacted">Le comité a été appelé et a donné l'autorisation de laisser rentrer la
