@@ -5,6 +5,7 @@ import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {UpdateAccredModalComponent} from '../update-accred-modal/update-accred-modal.component';
 import Swal from 'sweetalert2';
 import {AccredStaffDetailsComponent} from '../accred-staff-details/accred-staff-details.component';
+import {AccredHistoryModalComponent} from '../accred-history-modal/accred-history-modal.component';
 
 @Component({
   selector: 'app-accreds-list',
@@ -83,6 +84,9 @@ export class AccredsListComponent implements OnInit {
     this.dialog.open(UpdateAccredModalComponent, {data: id});
   }
 
+  history(accred: Accred) {
+    this.dialog.open(AccredHistoryModalComponent, {data: accred});
+  }
 
   delete(accred: Accred) {
     const name = (accred.firstname && accred.lastname) ?

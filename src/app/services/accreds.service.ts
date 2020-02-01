@@ -8,7 +8,7 @@ import {FullAccredType} from '../data/accredType';
 import {AccredTypesService} from './accredTypes.service';
 import {VipDesksService} from './vipDesks.service';
 import {AdminsService} from './admins.service';
-import {User} from '../data/user';
+import {FullAccredLog} from '../data/accredLog';
 
 @Injectable({providedIn: 'root'})
 export class AccredsService {
@@ -38,14 +38,12 @@ export class AccredsService {
   getFullAccreds(): Observable<FullAccred[]> {
     return this.getAccreds().pipe(
       switchMap(accreds => this.desks.getVipDesks().pipe(
-        switchMap(desks => this.people.getUsers().pipe(
-          switchMap(users => this.types.getAccredTypes().pipe(
+        switchMap(desks => this.people.getUsersMap().pipe(
+          switchMap(userMap => this.types.getAccredTypes().pipe(
             map(types => {
               const typeMap = new Map<number, FullAccredType>();
-              const userMap = new Map<number, User>();
               const deskMap = new Map<number, string>();
               types.forEach(tpe => typeMap.set(tpe.accredType.accredTypeId, tpe));
-              users.forEach(user => userMap.set(user.id, user));
               desks.forEach(desk => deskMap.set(desk.vipDeskId, desk.vipDeskName));
 
               return accreds.map(accred => {
@@ -76,6 +74,19 @@ export class AccredsService {
     return this.http.delete<void>(environment.apiurl + '/accreds/' + accred);
   }
 
+  getLogs(accred: number): Observable<FullAccredLog[]> {
+    return this.http.get<FullAccredLog[]>(environment.apiurl + '/accreds/' + accred + '/logs')
+      .pipe(switchMap(logs => this.people.getUsersMap().pipe(map(usersMap => logs.map(log => {
+          if (log.log.authoredByAdmin) {
+            log.admin = usersMap.get(log.log.authoredByAdmin);
+          }
+
+          const time = new Date(log.log.accredLogTime as any as string);
+          log.log.accredLogTime = time.toLocaleString();
+          return log;
+        })))));
+  }
+
   createAccreds(accreds: Accred[]) {
     return this.http.post<void>(environment.apiurl + '/accreds/multiple', accreds);
   }
@@ -86,12 +97,18 @@ export class AccredsService {
   }
 
   // tslint:disable-next-line:variable-name
-  private setStatus(accred: number, status: AccredStatus, remarks?: string, firstName?: string, lastName?: string, number?: string) {
-    return this.http.put<void>(environment.apiurl + '/accreds/' + accred + '/state', {targetState: status, remarks, firstName, lastName, number});
+  setRecovered(accred: number, remarks?: string, number?: string) {
+    return this.setStatus(accred, AccredStatus.RECOVERED, remarks, undefined, undefined, number);
   }
 
   // tslint:disable-next-line:variable-name
-  setRecovered(accred: number, remarks?: string, number?: string) {
-    return this.setStatus(accred, AccredStatus.RECOVERED, remarks, undefined, undefined, number);
+  private setStatus(accred: number, status: AccredStatus, remarks?: string, firstName?: string, lastName?: string, number?: string) {
+    return this.http.put<void>(environment.apiurl + '/accreds/' + accred + '/state', {
+      targetState: status,
+      remarks,
+      firstName,
+      lastName,
+      number
+    });
   }
 }

@@ -3,10 +3,18 @@ import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {User} from '../data/user';
+import {map} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class AdminsService {
   private admins = new BehaviorSubject<User[]>([]);
+  private adminsMap = this.admins.pipe(map(users => {
+    const userMap = new Map<number, User>();
+    users.forEach(user => userMap.set(user.id, user));
+
+    return userMap;
+  }));
+
   private lastPull = 0;
 
   constructor(private http: HttpClient) {
@@ -20,6 +28,12 @@ export class AdminsService {
   getUsers(): Observable<User[]> {
     this.pullIfNeeded();
     return this.admins;
+  }
+
+  getUsersMap(): Observable<Map<number, User>> {
+    this.pullIfNeeded();
+
+    return this.adminsMap;
   }
 
   private pullIfNeeded() {

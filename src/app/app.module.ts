@@ -43,6 +43,7 @@ import { HomepageStaffComponent } from './components/homepage/homepage-staff/hom
 import { AccredStaffDetailsComponent } from './components/accred-staff-details/accred-staff-details.component';
 import { SwitchToStaffComponent } from './components/switch-to-staff/switch-to-staff.component';
 import { CreateAccredModalComponent } from './components/create-accred-modal/create-accred-modal.component';
+import { AccredHistoryModalComponent } from './components/accred-history-modal/accred-history-modal.component';
 
 
 export function tokenGetter() {
@@ -68,7 +69,8 @@ export function tokenGetter() {
     HomepageStaffComponent,
     AccredStaffDetailsComponent,
     SwitchToStaffComponent,
-    CreateAccredModalComponent
+    CreateAccredModalComponent,
+    AccredHistoryModalComponent
   ],
   imports: [
     BrowserModule,
@@ -110,7 +112,8 @@ export function tokenGetter() {
     UpdateAccredModalComponent,
     AccredStaffDetailsComponent,
     SwitchToStaffComponent,
-    CreateAccredModalComponent
+    CreateAccredModalComponent,
+    AccredHistoryModalComponent,
   ],
   providers: [
     AuthService,
