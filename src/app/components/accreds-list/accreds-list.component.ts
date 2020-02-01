@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Accred, FullAccred, statusToString} from '../../data/accred';
+import {Accred, AccredStatus, FullAccred, statusToString} from '../../data/accred';
 import {AccredsService} from '../../services/accreds.service';
 import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {UpdateAccredModalComponent} from '../update-accred-modal/update-accred-modal.component';
@@ -14,6 +14,8 @@ import {AccredStaffDetailsComponent} from '../accred-staff-details/accred-staff-
 export class AccredsListComponent implements OnInit {
   accreds: MatTableDataSource<FullAccred> = new MatTableDataSource([]);
   statusToString = statusToString;
+  AccredStatus = AccredStatus;
+
 
   @Input() viewType: 'admin' | 'staff';
 

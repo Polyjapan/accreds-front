@@ -15,6 +15,7 @@ export class CreateAccredBulkComponent {
 
   hasName = true;
   mustContactAdmin = false;
+  requireRealNameOnDelivery = false;
   hasBody = true;
   hasStage = false;
   lines: string;
@@ -99,6 +100,7 @@ export class CreateAccredBulkComponent {
         accred.accredTypeId = this.accredType;
         accred.preferedVipDesk = this.vipPref;
         accred.mustContactAdmin = this.mustContactAdmin;
+        accred.requireRealNameOnDelivery = this.requireRealNameOnDelivery;
 
         if (this.hasName) {
           accred.firstname = line[0];

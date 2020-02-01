@@ -52,7 +52,9 @@
         <mat-icon>warning</mat-icon>
         <mat-icon>call</mat-icon>
         Cette accréditation nécessite de contacter le comité responsable pour pouvoir être délivrée.
-        <br>Merci de contacter le comité responsable <b>{{accred.author.details.firstName}} {{accred.author.details.lastName}}</b> au <b>{{accred.author.details.phoneNumber}}</b> avant de délivrer
+        <br>Merci de contacter le comité responsable
+        <b>{{accred.author.details.firstName}} {{accred.author.details.lastName}}</b> au
+        <b>{{accred.author.details.phoneNumber}}</b> avant de délivrer
         l'accréditation.<br>En l'absence de réponse ou si impossible d'appeler, <b>contactez le PC.</b>
       </p>
 
@@ -60,12 +62,59 @@
         personne
       </mat-checkbox>
     </ng-container>
+    <ng-container *ngIf="nameRequired">
+      <p>
+        <mat-icon>warning</mat-icon>
+        <mat-icon>contacts</mat-icon>
+        Le nom réel de la personne doit être relevé avant de l'accepter !
+        <br>Merci de renseigner le nom de la personne ci dessous.
+      </p>
+
+
+      <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Prénom" name="firstname" [(ngModel)]="firstName"/>
+        </mat-form-field>
+
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Nom" name="lastname" [(ngModel)]="lastName"/>
+        </mat-form-field>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="accred.type.physicalAccredType.physicalAccredTypeNumbered">
+      <p>
+        <mat-icon>warning</mat-icon>
+        <mat-icon>confirmation_number</mat-icon>
+        Cette accréditation est numérottée. Il vous faut indiquer le numéro de l'accréditation délivrée.
+        <br><b>Attention : ne délivrez pas l'accréditation avant d'avoir validé l'accueil de la personne et obtenu une
+        confirmation du système.</b>
+        <br>Merci de prendre une accréditation de ce type et d'indiquer son numéro ci dessous :
+        <b>{{accred.type.physicalAccredType.physicalAccredTypeName}}</b>
+      </p>
+
+      <mat-form-field style="width: 70%;">
+        <input matInput placeholder="Numéro de l'accréditation" name="number" [(ngModel)]="accredNumber"/>
+      </mat-form-field>
+    </ng-container>
 
   </ng-container>
   <ng-container *ngIf="accred.accred.status === Status.DELIVERED && accred.type.accredType.isTemporary">
     <p>Le contact a été accueilli et doit rendre son accréditation.
       <br>L'accréditation de ce contact est : <b>{{accred.type.physicalAccredType.physicalAccredTypeName}}</b></p>
 
+    <ng-container *ngIf="accred.type.physicalAccredType.physicalAccredTypeNumbered">
+      <p>
+        <mat-icon>warning</mat-icon>
+        <mat-icon>confirmation_number</mat-icon>
+        Cette accréditation est numérottée. Il vous faut indiquer le numéro de l'accréditation restituée.
+        <br><b>Merci de récupérer l'accréditation et de noter son numéro ci dessous.</b>
+      </p>
+
+      <mat-form-field style="width: 70%;">
+        <input matInput placeholder="Numéro de l'accréditation" name="number" [(ngModel)]="accredNumber"/>
+      </mat-form-field>
+    </ng-container>
 
     <mat-checkbox [(ngModel)]="recovered">J'ai bien récupéré l'accréditation du contact
     </mat-checkbox>
@@ -95,7 +144,7 @@
   </button>
 
   <button *ngIf="accred.accred.status === Status.DELIVERED" mat-stroked-button
-          [disabled]="!recovered || working" style="width: 100%;"
+          [disabled]="!canRecover || working" style="width: 100%;"
           (click)="confirmDeparture()">
     Confirmer le départ du contact
 

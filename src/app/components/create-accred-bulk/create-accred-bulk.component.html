@@ -25,6 +25,11 @@
     Demander au staff de vous contacter avant d'accepter ces contacts dans la convention
   </mat-checkbox>
 
+  <mat-checkbox [(ngModel)]="requireRealNameOnDelivery" name="requireRealNameOnDelivery" style="white-space: normal !important;">
+    Demander au staff de fournir le nom réel des personnes lors de leur arrivée (si pas encore renseigné)
+  </mat-checkbox>
+
+
   <br><br>
   <button mat-stroked-button style="width: 100%;"
           [disabled]="sending || !(isFormatValid && areTypesValid && isContentValid)" (click)="send()">

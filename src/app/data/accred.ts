@@ -14,6 +14,7 @@ export class Accred {
   status: AccredStatus = AccredStatus.GRANTED;
   preferedVipDesk: number;
   mustContactAdmin = false;
+  requireRealNameOnDelivery = false;
 }
 
 export class FullAccred {

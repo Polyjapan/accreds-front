@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {AccredsService} from '../../services/accreds.service';
 import {AccredStatus, FullAccred} from '../../data/accred';
 import Swal from 'sweetalert2';
+import {isNullOrUndefined} from 'util';
 
 @Component({
   selector: 'app-accred-staff-details',
@@ -17,6 +18,10 @@ export class AccredStaffDetailsComponent implements OnInit {
   informed = false;
   recovered = false;
 
+  firstName: string = undefined;
+  lastName: string = undefined;
+  accredNumber: string = undefined;
+
   remarks = '';
 
   working = false;
@@ -25,12 +30,32 @@ export class AccredStaffDetailsComponent implements OnInit {
               private accredsService: AccredsService,
               @Inject(MAT_DIALOG_DATA) public accred: FullAccred,
               private as: AccredsService) {
+    this.firstName = accred.accred.firstname;
+    this.lastName = accred.accred.lastname;
+  }
+
+  get nameRequired() {
+    return this.accred.accred.requireRealNameOnDelivery && (isNullOrUndefined(this.accred.accred.firstname) || isNullOrUndefined(this.accred.accred.lastname) || this.accred.accred.firstname.trim() === '' || this.accred.accred.lastname.trim() === '');
+  }
+
+  get nameOkay() {
+    return !this.nameRequired || (!isNullOrUndefined(this.firstName) && !isNullOrUndefined(this.lastName) && this.firstName.trim() !== '' && this.lastName.trim() !== '');
+  }
+
+  get numberOkay() {
+    return !this.accred.type.physicalAccredType.physicalAccredTypeNumbered || (!isNullOrUndefined(this.accredNumber) && this.accredNumber.trim() !== '');
   }
 
   get canValidate() {
     return (!this.accred.type.accredType.isTemporary || this.informed) &&
       (!this.accred.type.accredType.requiresSignature || this.signed) &&
-      (!this.accred.accred.mustContactAdmin || this.contacted);
+      (!this.accred.accred.mustContactAdmin || this.contacted) &&
+      this.nameOkay && this.numberOkay;
+  }
+
+
+  get canRecover() {
+    return this.recovered && this.numberOkay;
   }
 
   ngOnInit() {
@@ -42,12 +67,14 @@ export class AccredStaffDetailsComponent implements OnInit {
     }
     this.working = true;
 
-    this.as.setDelivered(this.accred.accred.accredId, this.remarks).subscribe(
+    this.as.setDelivered(this.accred.accred.accredId, this.remarks, this.firstName, this.lastName, this.accredNumber).subscribe(
       succ => {
+        const nameExt = this.accred.type.physicalAccredType.physicalAccredTypeNumbered ? ' ' + this.accredNumber : '';
+
         Swal.fire({
           titleText: 'C\'est tout bon !',
           html: 'Le contact a bien été accueilli !<br>Vous pouvez lui délivrer son accréditation : <b>' +
-            this.accred.type.physicalAccredType.physicalAccredTypeName + '</b>',
+            this.accred.type.physicalAccredType.physicalAccredTypeName + nameExt + '</b>',
           icon: 'success'
         });
         this.working = false;
@@ -74,7 +101,7 @@ export class AccredStaffDetailsComponent implements OnInit {
     }
     this.working = true;
 
-    this.as.setRecovered(this.accred.accred.accredId, this.remarks).subscribe(
+    this.as.setRecovered(this.accred.accred.accredId, this.remarks, this.accredNumber).subscribe(
       succ => {
         Swal.fire({
           titleText: 'C\'est tout bon !',

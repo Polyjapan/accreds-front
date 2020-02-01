@@ -80,15 +80,18 @@ export class AccredsService {
     return this.http.post<void>(environment.apiurl + '/accreds/multiple', accreds);
   }
 
-  setDelivered(accred: number, remarks?: string) {
-    return this.setStatus(accred, AccredStatus.DELIVERED, remarks);
+  // tslint:disable-next-line:variable-name
+  setDelivered(accred: number, remarks?: string, firstName?: string, lastName?: string, number?: string) {
+    return this.setStatus(accred, AccredStatus.DELIVERED, remarks, firstName, lastName, number);
   }
 
-  private setStatus(accred: number, status: AccredStatus, remarks?: string) {
-    return this.http.put<void>(environment.apiurl + '/accreds/' + accred + '/state', {targetState: status, remarks});
+  // tslint:disable-next-line:variable-name
+  private setStatus(accred: number, status: AccredStatus, remarks?: string, firstName?: string, lastName?: string, number?: string) {
+    return this.http.put<void>(environment.apiurl + '/accreds/' + accred + '/state', {targetState: status, remarks, firstName, lastName, number});
   }
 
-  setRecovered(accred: number, remarks?: string) {
-    return this.setStatus(accred, AccredStatus.RECOVERED, remarks);
+  // tslint:disable-next-line:variable-name
+  setRecovered(accred: number, remarks?: string, number?: string) {
+    return this.setStatus(accred, AccredStatus.RECOVERED, remarks, undefined, undefined, number);
   }
 }

@@ -30,6 +30,12 @@
     Demander au staff de vous contacter avant d'accepter le contact dans la convention
   </mat-checkbox>
 
+  <br>
+
+  <mat-checkbox [(ngModel)]="accred.requireRealNameOnDelivery" name="requireRealNameOnDelivery" style="white-space: normal !important;">
+    Demander au staff de fournir le nom réel de la personne lors de son arrivée (si pas encore renseigné)
+  </mat-checkbox>
+
   <br><br>
   <button mat-stroked-button style="width: 100%;" [disabled]="sending || !isValid" (click)="send()">
     Enregistrer

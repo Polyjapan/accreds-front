@@ -1,6 +1,7 @@
 export class PhysicalAccredType {
   physicalAccredTypeId?: number;
   physicalAccredTypeName: string;
+  physicalAccredTypeNumbered: boolean;
 }
 
 export class AccredType {
