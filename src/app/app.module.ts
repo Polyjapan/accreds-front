@@ -44,6 +44,9 @@ import { AccredStaffDetailsComponent } from './components/accred-staff-details/a
 import { SwitchToStaffComponent } from './components/switch-to-staff/switch-to-staff.component';
 import { CreateAccredModalComponent } from './components/create-accred-modal/create-accred-modal.component';
 import { AccredHistoryModalComponent } from './components/accred-history-modal/accred-history-modal.component';
+import { AccredTypeMappingComponent } from './components/accred-type-mapping/accred-type-mapping.component';
+import { SelectPhysicalAccredTypeComponent } from './components/selectors/select-physical-accred-type/select-physical-accred-type.component';
+import { CreatePhysicalAccredTypeComponent } from './components/selectors/select-physical-accred-type/create-physical-accred-type/create-physical-accred-type.component';
 
 
 export function tokenGetter() {
@@ -70,7 +73,10 @@ export function tokenGetter() {
     AccredStaffDetailsComponent,
     SwitchToStaffComponent,
     CreateAccredModalComponent,
-    AccredHistoryModalComponent
+    AccredHistoryModalComponent,
+    AccredTypeMappingComponent,
+    SelectPhysicalAccredTypeComponent,
+    CreatePhysicalAccredTypeComponent
   ],
   imports: [
     BrowserModule,
@@ -114,6 +120,7 @@ export function tokenGetter() {
     SwitchToStaffComponent,
     CreateAccredModalComponent,
     AccredHistoryModalComponent,
+    CreatePhysicalAccredTypeComponent
   ],
   providers: [
     AuthService,

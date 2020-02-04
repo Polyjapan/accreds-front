@@ -29,6 +29,10 @@ export class AppComponent {
     return this.auth.isAuthenticated();
   }
 
+  get isSecu() {
+    return this.auth.isAuthenticated() && this.auth.hasGroup('securite');
+  }
+
   get isStaff() {
     return this.auth.isStaff;
   }

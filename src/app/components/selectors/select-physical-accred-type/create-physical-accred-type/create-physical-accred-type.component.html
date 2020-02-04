@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Créer un nouveau type d'accréditation physique</h2>
+
+<mat-dialog-content>
+  <p>Utilisez ce formulaire pour créer un nouveau moyen physique d'accréditation.</p>
+
+  <form (ngSubmit)="submit($event)" #ngform="ngForm">
+    <mat-form-field style="width: 100%;">
+      <mat-label>Nom du type d'accréditation</mat-label>
+      <input matInput placeholder="Bracelet rouge" [(ngModel)]="accredType.physicalAccredTypeName" name="name" required maxlength="150">
+    </mat-form-field>
+
+    <mat-checkbox [(ngModel)]="accredType.physicalAccredTypeNumbered" name="isNumbered">Accréditation numérottée (le numéro doit être indiqué à l'arrivée/au retour)</mat-checkbox>
+    <br><br>
+
+    <button mat-stroked-button color="primary" type="submit" style="width: 100%;" [disabled]="sending || !ngform.form.valid">
+      Créer
+      <mat-progress-spinner *ngIf="sending" mode="indeterminate" diameter="20" class="spinner"></mat-progress-spinner>
+    </button>
+
+  </form>
+</mat-dialog-content>
+

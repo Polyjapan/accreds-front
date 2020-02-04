@@ -1,0 +1,16 @@
+<h1>Accréditations Physiques</h1>
+
+<p>Créez ici des accréditations physiques à associer aux types d'accréditation.</p>
+
+<mat-spinner *ngIf="!accredTypes"></mat-spinner>
+
+<form *ngIf="accredTypes">
+
+  <div fxLayout="row" *ngFor="let tpe of accredTypes">
+    <p fxFlex="30%"><b>{{tpe.accredType.accredTypeName}}</b> {{tpe.accredType.isTemporary ? '(Temporaire)' : ''}} {{tpe.accredType.requiresSignature ? '(Signature Requise)' : ''}}</p>
+    <app-select-physical-accred-type fxFlex [(selected)]="tpe.physicalAccredType" [allowEmpty]="false" [allowCreation]="true"></app-select-physical-accred-type>
+
+  </div>
+
+  <button style="width: 100%;" mat-stroked-button (click)="save()" [disabled]="working">Sauvegarder</button>
+</form>

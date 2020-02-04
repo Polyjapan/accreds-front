@@ -75,7 +75,7 @@ export class AuthService {
   public hasGroup(group: string): boolean {
     const token = this.getToken();
     if (this.isAuthenticated() && token) {
-      return token.groups.indexOf(group) !== -1;
+      return token.groups && token.groups.indexOf(group) !== -1;
     } else {
       return false;
     }

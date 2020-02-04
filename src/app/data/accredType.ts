@@ -15,3 +15,8 @@ export class FullAccredType {
   accredType: AccredType;
   physicalAccredType?: PhysicalAccredType;
 }
+
+export class AccredTypeMapping {
+  accredType: AccredType;
+  physicalAccredType?: number;
+}
