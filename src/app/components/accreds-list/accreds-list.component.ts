@@ -6,6 +6,7 @@ import {UpdateAccredModalComponent} from '../update-accred-modal/update-accred-m
 import Swal from 'sweetalert2';
 import {AccredStaffDetailsComponent} from '../accred-staff-details/accred-staff-details.component';
 import {AccredHistoryModalComponent} from '../accred-history-modal/accred-history-modal.component';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-accreds-list',
@@ -55,6 +56,17 @@ export class AccredsListComponent implements OnInit {
 
   applyFilter() {
     this.accreds.filter = this.filterAccredType || this.filterName ? 'enabled' : undefined;
+  }
+
+  export() {
+    const header = 'Nom,Prénom,Nom de scène,Organisme,Type d\'accred,Accred physique';
+    const content = this.accreds.filteredData
+      .map(data => data.accred.lastname + ',' + data.accred.firstname + ',' + data.accred.stageName + ',' +
+        data.accred.bodyName + ',' + data.type.accredType.accredTypeName + ',' + data.type.physicalAccredType.physicalAccredTypeName)
+      .join('\n');
+
+    const blob = new Blob([header + '\n' + content], {type: 'text/plain;charset=utf-8'});
+    FileSaver.saveAs(blob, 'accreds.csv');
   }
 
   ngOnInit() {

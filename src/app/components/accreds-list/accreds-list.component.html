@@ -10,6 +10,9 @@
   </div>
 </form>
 
+<p *ngIf="viewType === 'admin'"><i>Affichage de <b>{{accreds.filteredData.length}} accréditation(s)</b>.</i><span
+  (click)="export()">[Exporter les accréditations]</span></p>
+
 <div class="overflow-container">
   <table mat-table [dataSource]="accreds" matSort style="width: 100%;">
     <ng-container matColumnDef="name">
@@ -72,7 +75,8 @@
       <td mat-cell *matCellDef="let element">
         <button mat-raised-button (click)="view(element)" [disabled]="!element.type.physicalAccredType">
           <mat-icon>check</mat-icon>
-          Infos {{ element.type.accredType.isTemporary || element.accred.status === AccredStatus.GRANTED ? 'et ' + (element.accred.status === AccredStatus.DELIVERED ? 'Retour' : 'Accueil') : '' }} du contact
+          Infos {{ element.type.accredType.isTemporary || element.accred.status === AccredStatus.GRANTED ? 'et ' + (element.accred.status === AccredStatus.DELIVERED ? 'Retour' : 'Accueil') : '' }}
+          du contact
         </button>
       </td>
     </ng-container>
