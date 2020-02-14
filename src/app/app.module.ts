@@ -17,13 +17,13 @@ import {JwtModule} from '@auth0/angular-jwt';
 import {environment} from '../environments/environment';
 import {FlexLayoutModule, FlexModule} from '@angular/flex-layout';
 import {
-  MatCardModule, MatCheckboxModule,
-  MatDialogModule,
-  MatFormFieldModule,
-  MatInputModule, MatMenuModule,
-  MatProgressBarModule, MatProgressSpinnerModule,
-  MatSelectModule, MatSortModule,
-  MatTableModule, MatTooltipModule
+    MatCardModule, MatCheckboxModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule, MatMenuModule, MatPaginatorModule,
+    MatProgressBarModule, MatProgressSpinnerModule,
+    MatSelectModule, MatSortModule,
+    MatTableModule, MatTooltipModule
 } from '@angular/material';
 import {AuthService} from './services/auth.service';
 import {LoginService} from './services/login.service';
@@ -78,40 +78,41 @@ export function tokenGetter() {
     SelectPhysicalAccredTypeComponent,
     CreatePhysicalAccredTypeComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    AppRoutingModule,
-    HttpClientModule,
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        LayoutModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatListModule,
+        AppRoutingModule,
+        HttpClientModule,
 
-    JwtModule.forRoot({
-      config: {
-        tokenGetter,
-        whitelistedDomains: [environment.apidomain]
-      }
-    }),
-    FlexModule,
-    MatCardModule,
-    MatProgressBarModule,
-    MatTableModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    FormsModule,
-    MatDialogModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatProgressSpinnerModule,
-    MatSortModule,
-    MatTooltipModule,
-    MatMenuModule,
-    FlexLayoutModule,
-  ],
+        JwtModule.forRoot({
+            config: {
+                tokenGetter,
+                whitelistedDomains: [environment.apidomain]
+            }
+        }),
+        FlexModule,
+        MatCardModule,
+        MatProgressBarModule,
+        MatTableModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        FormsModule,
+        MatDialogModule,
+        MatInputModule,
+        MatCheckboxModule,
+        MatProgressSpinnerModule,
+        MatSortModule,
+        MatTooltipModule,
+        MatMenuModule,
+        FlexLayoutModule,
+        MatPaginatorModule,
+    ],
   entryComponents: [
     CreateAccredTypeComponent,
     CreateVipDeskComponent,

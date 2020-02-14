@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Accred, AccredStatus, FullAccred, statusToString} from '../../data/accred';
 import {AccredsService} from '../../services/accreds.service';
-import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {UpdateAccredModalComponent} from '../update-accred-modal/update-accred-modal.component';
 import Swal from 'sweetalert2';
 import {AccredStaffDetailsComponent} from '../accred-staff-details/accred-staff-details.component';
@@ -20,6 +20,7 @@ export class AccredsListComponent implements OnInit {
 
 
   @Input() viewType: 'admin' | 'staff';
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   columnsAdmin = ['name', 'bodyName', 'stageName', 'accredType', 'preferedDesk', 'particularities', 'author', 'adminActions'];
   columnsStaff = ['name', 'bodyName', 'stageName', 'accredType', 'author', 'accredStatus', 'particularities', 'staffActions'];
@@ -90,6 +91,8 @@ export class AccredsListComponent implements OnInit {
 
     this.service.getAccredsContinuous()
       .subscribe(data => this.accreds.data = data);
+
+    this.accreds.paginator = this.paginator;
   }
 
   update(id: number) {
