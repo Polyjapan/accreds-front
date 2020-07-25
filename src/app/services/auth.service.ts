@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {Router, UrlTree} from '@angular/router';
 import {environment} from '../../environments/environment';
-import {LoginService} from './login.service';
+import {isNullOrUndefined} from 'util';
 
 export class UserSession {
   groups?: string[];
@@ -33,6 +33,10 @@ export class AuthService {
     return this.route.createUrlTree([act]);
   }
 
+  public changeToken(token: string) {
+    localStorage.setItem('id_token', token);
+  }
+
   requiresLogin(redirectTo: string): boolean {
     if (this.isAuthenticated()) {
       return true;
@@ -61,6 +65,17 @@ export class AuthService {
     window.location.replace(environment.auth.apiurl + '/logout?app=' + environment.auth.clientId);
   }
 
+  public getEvent(): number {
+    const token = localStorage.getItem('id_token');
+    const decoded = this.jwtHelper.decodeToken(token);
+
+    if (decoded && decoded.event) {
+      return decoded.event as number;
+    } else {
+      return undefined;
+    }
+  }
+
   public getToken(): UserSession {
     const token = localStorage.getItem('id_token');
     const decoded = this.jwtHelper.decodeToken(token);
@@ -76,6 +91,15 @@ export class AuthService {
     const token = this.getToken();
     if (this.isAuthenticated() && token) {
       return token.groups && token.groups.indexOf(group) !== -1;
+    } else {
+      return false;
+    }
+  }
+
+  public isAdmin(): boolean {
+    const token = this.getToken();
+    if (this.isAuthenticated() && token) {
+      return !isNullOrUndefined(token.userId);
     } else {
       return false;
     }

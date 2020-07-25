@@ -47,6 +47,7 @@ import { AccredHistoryModalComponent } from './components/accred-history-modal/a
 import { AccredTypeMappingComponent } from './components/accred-type-mapping/accred-type-mapping.component';
 import { SelectPhysicalAccredTypeComponent } from './components/selectors/select-physical-accred-type/select-physical-accred-type.component';
 import { CreatePhysicalAccredTypeComponent } from './components/selectors/select-physical-accred-type/create-physical-accred-type/create-physical-accred-type.component';
+import { EventSelectorComponent } from './components/event-selector/event-selector.component';
 
 
 export function tokenGetter() {
@@ -76,7 +77,8 @@ export function tokenGetter() {
     AccredHistoryModalComponent,
     AccredTypeMappingComponent,
     SelectPhysicalAccredTypeComponent,
-    CreatePhysicalAccredTypeComponent
+    CreatePhysicalAccredTypeComponent,
+    EventSelectorComponent
   ],
     imports: [
         BrowserModule,

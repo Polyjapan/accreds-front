@@ -1,2 +1,9 @@
-<app-homepage-comite *ngIf="!isStaff"></app-homepage-comite>
-<app-homepage-staff *ngIf="isStaff"></app-homepage-staff>
+<ng-container *ngIf="event$ | async ; else error">
+  <app-homepage-comite *ngIf="!isStaff"></app-homepage-comite>
+  <app-homepage-staff *ngIf="isStaff"></app-homepage-staff>
+</ng-container>
+
+<ng-template #error>
+  <h1>Chargement</h1>
+  <p>Si cette page ne bouge pas, il est possible qu'aucun événement ne soit actif actuellement.</p>
+</ng-template>

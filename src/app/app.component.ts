@@ -8,6 +8,8 @@ import {MatDialog} from '@angular/material';
 import {SwitchToStaffComponent} from './components/switch-to-staff/switch-to-staff.component';
 import {LoginService} from './services/login.service';
 import Swal from 'sweetalert2';
+import {EventsService} from './services/events.service';
+import {Event} from './data/event';
 
 @Component({
   selector: 'app-root',
@@ -22,11 +24,19 @@ export class AppComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private auth: AuthService, private dialog: MatDialog, private login: LoginService) {
+  event: Observable<Event>;
+
+  constructor(private breakpointObserver: BreakpointObserver, private auth: AuthService, private dialog: MatDialog, private login: LoginService,
+              private events: EventsService) {
+    this.event = events.getEvent();
   }
 
   get isLoggedIn() {
     return this.auth.isAuthenticated();
+  }
+
+  get isAdmin() {
+    return this.auth.isAdmin();
   }
 
   get isSecu() {

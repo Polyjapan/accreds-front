@@ -8,7 +8,16 @@
     <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
   </button>-->
 
-  <a mat-button [routerLink]="['/']">GuestList Japan Impact</a>
+  <a mat-button [routerLink]="['/']">GuestList Japan Impact
+    <ng-container *ngIf="isLoggedIn">
+      :: <ng-container *ngIf="event | async as ev; else loading">{{ev.name}}</ng-container>
+
+      <ng-template #loading>Chargement...</ng-template>
+    </ng-container>
+
+  </a>
+  <app-event-selector *ngIf="isAdmin"></app-event-selector>
+
   <span class="spacer"></span>
 
   <ng-container *ngIf="!(isHandset$ | async)">

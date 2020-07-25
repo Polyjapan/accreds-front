@@ -1,0 +1,7 @@
+<button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="events$ | async">
+  <mat-icon>history</mat-icon>
+</button>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="switch(ev.id)" *ngFor="let ev of events$ | async">{{ev.name}}</button>
+</mat-menu>
