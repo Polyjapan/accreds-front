@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {EventsService} from '../../services/events.service';
 import {Observable} from 'rxjs';
 import {Event} from '../../data/event';
@@ -10,6 +10,7 @@ import {Event} from '../../data/event';
 })
 export class EventSelectorComponent implements OnInit {
   events$: Observable<Event[]>;
+  @Input() event: Observable<Event>;
 
   constructor(private events: EventsService) {
     this.events$ = events.getEvents();

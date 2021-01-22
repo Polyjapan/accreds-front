@@ -4,6 +4,7 @@
 </ng-container>
 
 <ng-template #error>
-  <h1>Chargement</h1>
+  <h1>Chargement de l'événement actif...</h1>
   <p>Si cette page ne bouge pas, il est possible qu'aucun événement ne soit actif actuellement.</p>
+  <p *ngIf="!isStaff">Sélectionnez un ancien ou futur événement ici : <app-event-selector></app-event-selector></p>
 </ng-template>

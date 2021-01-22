@@ -9,14 +9,9 @@
   </button>-->
 
   <a mat-button [routerLink]="['/']">GuestList Japan Impact
-    <ng-container *ngIf="isLoggedIn">
-      :: <ng-container *ngIf="event | async as ev; else loading">{{ev.name}}</ng-container>
-
-      <ng-template #loading>Chargement...</ng-template>
-    </ng-container>
-
+    <ng-container *ngIf="isStaff"> :: <b>Mode Staff</b> <ng-container *ngIf="event | async as ev"> ({{ev.name}})</ng-container></ng-container>
   </a>
-  <app-event-selector *ngIf="isAdmin"></app-event-selector>
+  <app-event-selector *ngIf="isAdmin" [event]="event"></app-event-selector>
 
   <span class="spacer"></span>
 
