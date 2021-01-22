@@ -55,14 +55,19 @@ export class AuthService {
 
   public logout(): void {
     // Remove tokens and expiry time from localStorage
+    const staff = this.isStaff;
     localStorage.removeItem('id_token');
 
-    window.location.replace(environment.auth.apiurl + '/logout?app=' + environment.auth.clientId);
+    if (!staff) {
+      window.location.replace(environment.auth.apiurl + '/logout?service=' + window.location.origin);
+    } else {
+      window.location.reload();
+    }
   }
 
   public switchToStaff(token: string): void {
     localStorage.setItem('id_token', token);
-    window.location.replace(environment.auth.apiurl + '/logout?app=' + environment.auth.clientId);
+    window.location.replace(environment.auth.apiurl + '/logout?service=' + window.location.origin);
   }
 
   public getEvent(): number {

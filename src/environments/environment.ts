@@ -11,7 +11,6 @@ export const environment = {
 
   auth: {
     apiurl: 'https://auth.japan-impact.ch/',
-    clientId: '3lHGENIo0Kn0s1ynR2Q508E3ae000PLkIcgrNtKsUGs'
   },
 };
 
