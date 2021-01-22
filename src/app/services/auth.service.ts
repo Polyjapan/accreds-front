@@ -19,7 +19,7 @@ export class AuthService {
   }
 
   get isStaff() {
-    return this.getToken().staffUserId;
+    return this.isAuthenticated() && this.getToken().staffUserId;
   }
 
   login(token: string): UrlTree {
